@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/vue.js"></script>
+    <script src="js/dayjs.min.js"></script>
+    <title>demo2</title>
+    <style>
+        .basic{
+            width: 400px;
+            height: 100px;
+            border: 1px solid black;
+        }
+        .sad{
+            background-color: blue;
+        }
+        .happy{
+            background-color: pink;
+        }
+        .normal{
+            background-color: yellow;
+        }
+        .fontClass1{
+            font-size: 10px;
+        }
+        .fontClass2{
+            border-radius: 25px;
+            padding: 10px;
+        }
+        .fontClass3{
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <!-- 绑定class样式--字符串写法，适用于样式的类名不确定，需要动态指定 -->
+        <div class="basic" :class="mood"  @click="changeMood">{{name}}</div>
+        <!-- 绑定class样式--数组写法，适用于样式的个数不确定、名字也不确定 -->
+        <div class="basic" :class="classArr" @click="changeMood">{{name}}</div>
+        <!-- 绑定class样式--对象写法，适用于样式的个数确定、名字也确定，但要决定动态用不用 -->
+        <div class="basic" :class="objectArr" @click="changeMood">{{name}}</div>
+
+        <!-- 绑定style样式--对象写法 -->
+        <div class="basic" :style="styleObj">{{name}}</div>
+        <!-- 绑定style样式--数组写法 -->
+        <div class="basic" :style="styleArr">{{name}}</div>
+        <hr>
+        <!-- 使用v-show做条件渲染，相对于display:none -->
+        <h2 v-show="false">欢迎来到{{name}}</h2>
+        <h2 v-show="1===1">欢迎来到{{name}}</h2>
+        <!-- 使用v-if做条件渲染，为false则删除节点 -->
+        <h2 v-if="false">欢迎来到{{name}}</h2>
+        <!-- v-else和v-else-if -->
+        <!-- <h2 v-if="1===1">欢迎来到{{name}}</h2>
+        <h2 v-else-if="1===1">欢迎来到{{name}}</h2>
+        <h2 v-else>欢迎来到{{name}}</h2> -->
+
+        <!-- template只能配合v-if使用 -->
+        <template v-if="1===1">
+            <h2>你好</h2>
+            <h2>你好</h2>
+            <h2>你好</h2>
+        </template>
+        <hr>
+        <!-- 遍历数组 -->
+        <ul>
+            <li v-for="(p,index) in persons" :key="index">{{index}}-{{p.name}}-{{p.age}}</li>
+        </ul>
+        <!-- 遍历对象 -->
+        <ul>
+            <li v-for="(value,k) in car" :key="k">{{value}}-{{k}}</li>
+        </ul>
+        <!-- 遍历字符串 -->
+        <ul>
+            <li v-for="(value,index) in str" :key="index">{{value}}-{{index}}</li>
+        </ul>
+        <!-- 遍历指定次数 -->
+        <ul>
+            <li v-for="(number,index) in 5" :key="index">{{number}}-{{index}}</li>
+        </ul>
+        <hr>
+        <!-- 列表过滤（模糊查询） -->
+        <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <button @click="ageOder(1)">年龄升序</button>
+        <button @click="ageOder(-1)">年龄降序</button>
+        <button @click="ageOder(0)">原顺序</button>
+        <ul>
+            <li v-for="(p,index) in filStars" :key="p.id">{{p.id}}-{{p.name}}-{{p.age}}</li>
+        </ul>
+        <hr>
+        <!-- 表单收集数据 -->
+        <form @submit.prevent="submitForm">
+            <label for="formName">账号：<input v-model.trim="userInfo.account" type="text" id="formName"><br><br>
+            <label for="formPas">密码：<input v-model="userInfo.password" type="password" id="formPas"><br><br>
+            <label for="formAge">年龄：<input v-model.number="userInfo.age" type="number" id="formAge"><br><br>
+            性别：
+            男<input type="radio" name="sex" v-model="userInfo.sex" value="male">
+            女<input type="radio" name="sex" v-model="userInfo.sex" value="female">
+            <br><br>
+            爱好：
+            学习<input type="checkbox" v-model="userInfo.hobby" value="study">
+            开车<input type="checkbox" v-model="userInfo.hobby" value="drive">
+            打豆豆<input type="checkbox" v-model="userInfo.hobby" value="doDD">
+            摆烂<input type="checkbox" v-model="userInfo.hobby" value="bailan">
+            <br><br>
+            <select v-model="userInfo.school">
+                <option value="">请选择校区</option>
+                <option value="beijing">北京</option>
+                <option value="shanghai">上海</option>
+                <option value="shenzhen">深圳</option>
+                <option value="wuhan">武汉</option>
+            </select>
+            <br><br>
+            其他信息：
+            <textarea v-model.lazy="userInfo.other"></textarea>
+            <br><br>
+            <input v-model="userInfo.agree" type="checkbox">阅读并接受<a href="http://baidu.com">《用户协议》</a>
+            <br><br>
+            <button>提交</button>
+        </form>
+        <hr>
+        <!-- 过滤器 -->
+        <h2>显示格式化后的时间</h2>
+        <h3>现在是：{{fmtTime}}</h3>
+        <h3>现在是：{{time}}</h3>
+        <hr>
+        <div>{{name}}</div>
+        <div v-text="name"></div>
+        <hr>
+        <h2 :style="{opacity}">我是一直改变的透明度</h2>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false
+
+        new Vue({
+            el:'#root',
+            data:{
+                name:'张三', 
+                mood: 'normal',
+                classArr:['fontClass1','fontClass2','fontClass3'],
+                objectArr:{
+                    fontClass1:false,
+                    fontClass2:false,
+                },
+                styleObj:{
+                    fontSize:  '40px',
+                    backgroundColor:'red',
+                },
+                styleArr:[
+                    {
+                        fontSize:'5px',
+                        color:'blue',
+                    },
+                    {
+                        backgroundColor:'gray',
+                    }
+                ],
+                persons:[
+                    {id:'001',name:'张三',age:15},
+                    {id:'002',name:'李四',age:51},
+                    {id:'003',name:'王五',age:42},
+                ],
+                car:{
+                    name:'奥迪双钻',
+                    price:'100万',
+                    color:'粉色',
+                },
+                str:'HELLO',
+                stars:[
+                    { id: '001', name: '马冬梅', age: 18,sex:'女' },
+                    { id: '002', name: '周冬雨', age: 12,sex:'女' },
+                    { id: '003', name: '周杰伦', age: 20,sex:'男' },
+                    { id: '004', name: '温兆伦', age: 21,sex:'男' }, 
+                ],
+                keyWord:'',
+                filStars:[],
+                //表单数据
+                userInfo:{
+                    account: '',
+                    password: '',
+                    age:18,
+                    sex: 'female',
+                    hobby: [],
+                    school: '',
+                    other: '',
+                    agree: false,
+                },
+                //时间
+                time:Date.now(),
+                //透明度
+                opacity:1,
+            },
+            computed:{
+                fmtTime(){
+                    return dayjs().format('YYYY-MM-DD HH:mm:ss')
+                }
+            },
+            methods:{
+                changeMood(){
+                    let arr = ['happy','sad','normal']
+                    this.mood = arr[Math.floor(Math.random() * 3)]
+                },
+                ageOder(flag){
+                    if (flag ===1) {
+                        this.filStars.sort((a,b)=>{
+                            return a.age-b.age
+                        });
+                    }else if (flag ===-1) {
+                        this.filStars.sort((a, b) => {
+                            return b.age - a.age
+                        });
+                    }else if (flag ===0) {
+                        this.filStars.sort((a, b) => {
+                            return a.id - b.id
+                        });
+                    }
+                },
+                submitForm(){
+                    console.log("提交成功",JSON.stringify(this.userInfo));
+                }
+            },
+            watch:{
+                keyWord:{
+                    immediate:true,
+                    handler(val){
+                        this.filStars = this.stars.filter((p) => {
+                            return p.name.indexOf(val) != -1
+                        })
+                    }
+                    
+                }
+            },
+            //过滤器本质上是个函数
+            filters:{
+            },
+            //Vue完成模板的解析并把初始的真实DOM元素放入页面后（挂载完毕）调用mounted
+            mounted() {
+                console.log('mounted')
+                setInterval(()=>{
+                    this.opacity -= 0.01
+                    if(this.opacity <= 0) this.opacity = 1
+                },16)
+            },
+        })
+    </script>
+</body>
+</html>

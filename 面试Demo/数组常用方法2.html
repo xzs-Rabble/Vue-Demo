@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组常用方法2</title>
+</head>
+<body>
+    <h2>数组常用方法2</h2>
+    <script>
+        let userList = [
+            {
+                name:'张三',
+                age:18,
+            },
+            {
+                name:'李四',
+                age:52,
+            },
+            {
+                name:'王五',
+                age:44,
+            },
+            {
+                name:'赵六',
+                age:12,
+            },
+        ]   
+        //1. forEach 遍历数组每一项
+        // 没有返回值并不会被打破
+        userList.forEach(user=>{
+            console.log("forEach",user);
+            // return "123"
+        })
+        console.log("forEach",userList);
+        //2. map 为数组里每一项进行操作，并返回一个新数组
+        let res1 = userList.map(user=>{
+            console.log("map",user);
+            // return 'qqq'
+        })
+        console.log("map",res1); //全是undefined
+        //3. filter 循环过滤符号条件的数组，并返回一个新数组
+        let res2 = userList.filter(user=>{
+             return user.age > 25 //筛选出年龄大于25的
+        })
+        console.log("filter",res2);
+        //4. find 查找符合条件的元素返回，且只会返回符合条件的第一个
+        let res3 = userList.find(user=>{
+             return user.age > 25 //筛选出年龄大于25的
+        })
+        console.log("find",res3);
+        //5. find 查找符合条件的元素返回，且只会返回符合条件的第一个的下标
+        let res4 = userList.findIndex(user=>{
+             return user.age > 25 //筛选出年龄大于25的
+        })
+        console.log("findIndex",res4);
+        //6. some 查找符合条件的元素返回true
+        let res5 = userList.some(user=>{
+             return user.age > 25 //只要有一个满足年龄大于25的就为true
+        })
+        console.log("some",res5);
+        //7. every 查找符合条件的元素返回true
+        let res6 = userList.every(user=>{
+             return user.age > 25 //所有人都要满足年龄大于25才会返回true
+        })
+        console.log("every",res6);
+        //8. reduce累加
+        let arr = [1,2,3,4,5,6,7,8,9,10]
+        let res7 = arr.reduce((sum,value)=>{
+            console.log("new",sum);
+            console.log("old",value);
+            return sum + value
+        })
+        console.log("reduce",res7);
+</script>
+</body>
+</html>

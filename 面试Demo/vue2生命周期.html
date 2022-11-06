@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue2生命周期</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <h2 id="app">vue2生命周期</h2>
+    <script>
+        const app = new Vue({
+            el:"#app",
+            data:{
+                msg:"HELLO WORLD",
+                msg2:"222",
+            },
+            //8个生命周期
+            //created mounted updated destoryed
+            beforeCreate() {
+                console.log("beforeCreate，挂载了vue实例方法，但data没有挂载",this.msg)
+            },
+            create() {
+                console.log("create，挂载了data",this.msg)
+            },
+            beforeMount() {
+                console.log("beforeMount，data没有渲染到页面",this.msg)
+            },
+            Mounted() {
+                console.log("Mounted，data渲染到页面",this.msg)
+            },
+            beforeUpdate() {
+                console.log("beforeUpdate，数据更改导致DOM更改之前",this.msg)
+            },
+            updated() {
+                console.log("updated，数据更改导致DOM更改之后",this.msg)
+            },
+            beforeDestroy() {
+                console.log("beforeDestroy",this.msg)
+            },
+            destroyed() {
+                console.log("destroyed",this.msg)
+            },
+        })
+        
+    </script>
+</body>
+</html>

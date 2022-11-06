@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./js/vue.js"></script>
+    <title>初始vue</title>
+</head>
+<body>
+    <!-- 装备一个容器 -->
+    <div id="root">
+        <h1>hellow，{{age}}</h1>
+        <hr>
+        <h1>指令语法</h1>
+        <!-- 正常语法 -->
+        <a v-bind:href="url">点击我去尚硅谷1</a>
+        <!-- 简写 -->
+        <a :href="url">点击我去尚硅谷2</a> <br>
+        
+        <!-- 普通写法 -->
+        单向数据绑定：<input type="text" v-bind:value="name"><br>
+        双向数据绑定：<input type="text" v-model:value="name"><br>
+        <!-- 简写 -->
+        单向数据绑定：<input type="text" :value="name"><br>
+        双向数据绑定：<input type="text" v-model="name"><br>
+        <hr>
+        <!-- 事件处理 -->
+        <button @click.once="showInfo">点击我提示信息</button>
+        <button @click="showInfo($event,66)">点击我提示信息</button>
+        <!-- 事件修饰符 -->
+        <a href="http://atguigu.com" @click.prevent="showInfo($event,66)">链接跳转</a>
+        <input type="text" placeholder="按下回车提示输入" @keyup.ctrl="showInfo($event,66)">
+        <hr>
+        <input type="text" v-model="name" placeholder="按下回车提示输入">
+        <input type="text" v-model="age" placeholder="按下回车提示输入">
+        <span>{{nameAge}}</span>
+        <hr>
+        <h2>今天天气很{{tianqi}}</h2>
+        <button @click="isHot = !isHot">切换天气</button>
+    </div>
+
+    <script type="text/javascript">
+        //阻止vue在启动时生成生存提示
+        Vue.config.productionTip = false;
+        
+        
+        //创建Vue实例——容器与实例一一对应
+        const vm= new Vue({
+            el:'#root', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器
+            // data第二种写法
+            data(){   //数据供el里所指定的容器去使用
+                return{
+                    name:'张三',
+                    age:18,
+                    url:'http://atguigu.com',
+                    isHot:true,
+                    
+                }
+            },
+            //计算属性
+            computed:{
+                //完整写法
+                /* nameAge:{
+                    //当有人读取nameAge时，get就会调用，返回值就是nameAge的值
+                    //get会自动把this指向vm实例
+                    //get什么时候调用？1.初次读取时；2.所依赖的数据发送变化时。
+                    get(){
+                        return this.name + this.age
+                    },
+                    //set什么时候被调用？当nameAge被修改的时候
+                    set(value){
+                        let arr = value.split('-')
+                        this.name = arr[0]
+                        this.age = arr[1]
+
+                    }
+                }, */
+
+                //简写
+                nameAge(){
+                    return this.name + '-' + this.age;
+                },
+                tianqi(){
+                    return this.isHot?'热~':'nice!'
+                }
+
+            },
+            //方法
+            methods:{
+                showInfo(e,a){
+                    console.log(e.target.value);
+                    // alert('你好，你个黛比！'+a);
+                },
+            },
+            //监视
+            watch:{
+                //简写
+                isHot(){    
+                        console.log('isHot被修改了');
+                },
+            },
+
+        })
+        //简写
+        // vm.$watch(('isHot'),{
+        //     immediate: true,  //初始化时让handler先调用一次
+        //     handler(newValue, oldValue) {
+        //         console.log('isHot被修改了' + newValue + oldValue);
+        //     }
+        // })
+        
+    </script>
+</body>
+</html> 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数防抖与节流</title>
+</head>
+<body>
+    <h2>函数防抖与节流</h2>
+    <button id="btn1">防抖</button>
+    <button id="btn2">节流</button>
+    <script>
+        /* 
+        作用：防止重复操作/执行 函数
+        防抖：用户一直触发某个函数，触发间隔如果小于设定的时间间隔，则只执行一次
+        节流：在设定之间间隔内执行一次
+        */
+        //1. 防抖
+        let btn1 = document.querySelector('#btn1')
+        function debounce(fn,delay){
+            let timer = null
+            return function(){
+                clearTimeout(timer)
+                timer = setTimeout(()=>{
+                    fn()
+                },delay)
+            }
+        }
+        function handleBtn1(){
+            console.log("请求接口");
+        }
+        btn1.onclick = debounce(handleBtn1,500)
+
+        //2. 节流
+        let btn2 = document.querySelector('#btn2')
+        function throttle(fn,delay){
+            /* 记录上一次点击的时间，
+            和本次点击时间进行对比，符合
+            时间间隔则执行函数，否则不执行 */
+            let lastTime = 0
+            return function(){
+                let nowTime  = new Date().getTime()
+                if(nowTime-lastTime>delay){
+                    fn()
+                    lastTime = nowTime
+                }
+            }
+        }
+        function handleBtn2(){
+            console.log("请求接口2");
+        }
+        btn2.onclick = throttle(handleBtn2,1000)
+    </script>
+</body>
+</html>
